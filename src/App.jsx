@@ -1,4 +1,5 @@
-import React from 'react';
+// src/App.jsx
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './Layout'; // Layout para rutas privadas
 import HomePage from './HomePage';
@@ -9,15 +10,19 @@ import Nomina from './Nomina';
 import Contacto from './Contacto';
 import LoginPage from './LoginPage'; // Ruta pública
 
-// Simulación de autenticación
-const isAuthenticated = true; // Cambia esto según la lógica de tu aplicación
-
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Manejo del estado de autenticación
+
+  // Función para manejar la autenticación
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
   return (
     <Router>
       <Routes>
-        {/* Rutas Públicas */}
-        <Route path="/login" element={<LoginPage />} />
+        {/* Ruta Pública para Login */}
+        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
 
         {/* Rutas Privadas */}
         <Route path="/" element={isAuthenticated ? <Layout /> : <Navigate to="/login" replace />}>
