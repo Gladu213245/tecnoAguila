@@ -6,8 +6,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 // Montamos la aplicación dentro del elemento con id "root"
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />  {/* Aquí llamamos al componente principal que organiza el proyecto */}
-  </StrictMode>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
