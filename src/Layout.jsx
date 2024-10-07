@@ -8,7 +8,6 @@ import { FaUsers, FaMoneyCheckAlt, FaEnvelope, FaClipboardList, FaFileAlt } from
 const Layout = () => {
     const navigate = useNavigate();
 
-    // Función para manejar la redirección
     const handleNavigation = (path) => {
         navigate(path);
     };
@@ -21,7 +20,7 @@ const Layout = () => {
         <div className="layout">
             <nav className="navbar">
                 {/* Ícono de la marca como botón */}
-                <button className="icon-button" onClick={() => handleNavigation('/')}>
+                <button className="icon-button" onClick={() => handleNavigation('/home')}>
                     <img
                         className="navbar-icon"
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQya4Eqme0GTpz3oCRL5m64s-lqT_zINP4nbQ&s"
@@ -30,37 +29,27 @@ const Layout = () => {
                     <div className="icon-text">Tecno Desarrolladora Águila</div>
                 </button>
 
-                {/* Botón Inicio con ícono */}
-                <button className="nav-button" onClick={() => handleNavigation('/')}>
+                {/* Botones de navegación */}
+                <button className="nav-button" onClick={() => handleNavigation('/home')}>
                     <AiFillHome className="nav-icon" />
                     Inicio
                 </button>
-
-                {/* Botón Asistencias con ícono */}
                 <button className="nav-button" onClick={() => handleNavigation('/asistencias')}>
                     <FaClipboardList className="nav-icon" />
                     Asistencias
                 </button>
-
-                {/* Botón Empleados con ícono */}
                 <button className="nav-button" onClick={() => handleNavigation('/employees')}>
                     <FaUsers className="nav-icon" />
                     Empleados
-                </button> 
-
-                {/* Botón Nuevo Archivo con ícono */}
+                </button>
                 <button className="nav-button" onClick={() => handleNavigation('/nuevo-archivo')}>
                     <FaFileAlt className="nav-icon" />
                     Nuevo Archivo
                 </button>
-
-                {/* Botón Nómina con ícono */}
                 <button className="nav-button" onClick={() => handleNavigation('/nomina')}>
                     <FaMoneyCheckAlt className="nav-icon" />
                     Nómina
                 </button>
-
-                {/* Botón Contacto con ícono */}
                 <button className="nav-button" onClick={handleExternalLink}>
                     <FaEnvelope className="nav-icon" />
                     Contacto

@@ -1,13 +1,15 @@
-import { StrictMode } from 'react';
+// src/index.jsx
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.jsx';  // Llamamos al componente principal del proyecto
-import './styles.css';        // Estilos globales
+import App from './App.jsx';
+import './styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-// Montamos la aplicación dentro del elemento con id "root"
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />  {/* Aquí llamamos al componente principal que organiza el proyecto */}
-  </StrictMode>
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
+
