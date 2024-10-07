@@ -6,7 +6,8 @@ import "./styles.css"; // Asegúrate de que el nombre del archivo es correcto
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     // Puedes agregar lógica adicional aquí si lo deseas
     navigate('/home'); // Redirige al home después de "iniciar sesión"
   };

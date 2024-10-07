@@ -55,9 +55,11 @@ const Layout = () => {
                     Contacto
                 </button>
             </nav>
+
             <div className="content">
-                <Outlet /> {/* Renderiza el componente correspondiente a la ruta */}
-            </div>
+        <Outlet /> {/* Renderiza el componente correspondiente a la ruta */}
+      </div>
+            
         </div>
     );
 };
