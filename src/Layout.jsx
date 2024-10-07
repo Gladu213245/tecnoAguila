@@ -20,7 +20,7 @@ const Layout = () => {
         <div className="layout">
             <nav className="navbar">
                 {/* Ícono de la marca como botón */}
-                <button className="icon-button" onClick={() => handleNavigation('/home')}>
+                <button className="icon-button" onClick={() => handleNavigation('/')}>
                     <img
                         className="navbar-icon"
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQya4Eqme0GTpz3oCRL5m64s-lqT_zINP4nbQ&s"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Carousel,
   CarouselItem,
@@ -32,6 +32,7 @@ const items = [
 const CarouselComponent = (args) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
+  const carouselRef = useRef(null); // Ref en vez de findDOMNode
 
   const next = () => {
     if (animating) return;
@@ -67,7 +68,7 @@ const CarouselComponent = (args) => {
   });
 
   return (
-    <div className="carousel-container">
+    <div className="carousel-container" ref={carouselRef}>
       <Carousel
         activeIndex={activeIndex}
         next={next}
@@ -96,3 +97,4 @@ const CarouselComponent = (args) => {
 };
 
 export default CarouselComponent;
+
