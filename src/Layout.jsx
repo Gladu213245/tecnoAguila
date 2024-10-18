@@ -1,40 +1,69 @@
 // src/Layout.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import './styles.css';
 import { AiFillHome } from 'react-icons/ai';
 import { FaUsers, FaMoneyCheckAlt, FaEnvelope, FaClipboardList, FaFileAlt } from 'react-icons/fa';
+import { IconButton, Menu, MenuItem, Avatar } from '@mui/material';
 
-/**
- * Layout es un componente que define la estructura común de la aplicación,
- * como la barra de navegación. Utiliza Outlet para renderizar las rutas hijas.
- *
- * @returns {React.ReactNode} - Estructura de la página con navegación y contenido.
- */
 const Layout = () => {
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  /**
-   * handleNavigation navega a la ruta especificada.
-   *
-   * @param {string} path - Ruta a la que se desea navegar.
-   */
+  // Datos del usuario desde localStorage
+  const username = localStorage.getItem('username') || 'Usuario';
+  const userType = 'Administrador'; // Aquí puedes ajustar el tipo de usuario
+
   const handleNavigation = (path) => {
     navigate(path);
   };
 
-  /**
-   * handleExternalLink redirige al usuario a una página externa.
-   */
-  const handleExternalLink = () => {
-    window.location.href = "https://tecnoaguila.com.mx/";
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('username');
+    navigate('/');
   };
+
+  // Controlar el menú desplegable
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  // Cerrar sesión automáticamente después de 10 minutos de inactividad
+  useEffect(() => {
+    const timeoutDuration = 10 * 60 * 1000; // 10 minutos
+
+    let timeout;
+
+    const resetTimeout = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        handleLogout();
+      }, timeoutDuration);
+    };
+
+    // Escuchar eventos de interacción para detectar actividad
+    window.addEventListener('mousemove', resetTimeout);
+    window.addEventListener('keypress', resetTimeout);
+
+    resetTimeout(); // Iniciar el timeout
+
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener('mousemove', resetTimeout);
+      window.removeEventListener('keypress', resetTimeout);
+    };
+  }, [navigate]);
 
   return (
     <div className="layout">
       <nav className="navbar">
         {/* Ícono de la marca como botón */}
-        <button className="icon-button" onClick={() => handleNavigation('/')}>
+        <button className="icon-button" onClick={() => handleNavigation('/home')}>
           <img
             className="navbar-icon"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQya4Eqme0GTpz3oCRL5m64s-lqT_zINP4nbQ&s"
@@ -64,19 +93,44 @@ const Layout = () => {
           <FaMoneyCheckAlt className="nav-icon" />
           Nómina
         </button>
-        <button className="nav-button" onClick={handleExternalLink}>
+        <button className="nav-button" onClick={() => handleNavigation('/contacto')}>
           <FaEnvelope className="nav-icon" />
           Contacto
         </button>
+
+        {/* Menú desplegable del perfil */}
+        <div className="profile-container">
+          <IconButton onClick={handleMenuOpen}>
+            <Avatar>{username.charAt(0).toUpperCase()}</Avatar>
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem>{username}</MenuItem>
+            <MenuItem>{userType}</MenuItem>
+            <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+          </Menu>
+        </div>
       </nav>
 
-      {/* Contenido de las Rutas Hijas */}
       <div className="content">
-        <Outlet /> {/* Renderiza el componente correspondiente a la ruta */}
+        <Outlet />
       </div>
     </div>
   );
 };
 
 export default Layout;
+
+
+
+
+
+
+
+
+
+
 
