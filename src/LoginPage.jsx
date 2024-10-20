@@ -12,7 +12,7 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await fetch('http://127.0.0.1:8000/api/auth/login/', {
         method: 'POST',
@@ -24,14 +24,14 @@ const LoginPage = () => {
           password: password
         }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
-        // Almacenar los tokens en el almacenamiento local
+        // Guardar tokens y nombre de usuario en localStorage
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
         localStorage.setItem('username', data.username);
-  
+
         // Redirigir al usuario a la página principal
         navigate('/user/home');
       } else {
@@ -42,7 +42,6 @@ const LoginPage = () => {
       setError('Ocurrió un error. Por favor, inténtalo más tarde.');
     }
   };
-  
 
   return (
     <div className="login-container">
@@ -80,3 +79,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+

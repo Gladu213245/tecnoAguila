@@ -1,11 +1,76 @@
-import React from 'react';
+// src/EmployeeForm.jsx
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { fetchWithAuth } from './utils/api'; // Importamos fetchWithAuth
 import './styles.css';
 
 const EmployeeForm = () => {
+  const [employeeData, setEmployeeData] = useState([]);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);  // Agregar estado de carga
+  const navigate = useNavigate();  // Para redirigir al login si es necesario
+
+  // Función para obtener los datos de los empleados
+  useEffect(() => {
+    const fetchEmployeeData = async () => {
+      try {
+        console.log('Haciendo solicitud para obtener datos de empleados');
+        
+        // Realizamos la solicitud protegida con fetchWithAuth
+        const response = await fetchWithAuth('http://127.0.0.1:8000/api/v1/registro/', {
+          method: 'GET',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Datos de empleados obtenidos:', data);
+          setEmployeeData(data);
+        } else if (response.status === 401) {
+          console.log('Error de autenticación, redirigiendo al login');
+          setError('No estás autorizado. Inicia sesión de nuevo.');
+          navigate('/');
+        } else {
+          console.log('Error obteniendo los datos de empleados:', response.status);
+          setError('Error al obtener los datos del empleado.');
+        }
+      } catch (error) {
+        setError('Error en la solicitud. Inténtalo más tarde.');
+        console.error('Error en la solicitud:', error);
+      } finally {
+        setLoading(false);  // Detener la carga cuando se completan las llamadas
+      }
+    };
+
+    fetchEmployeeData();  // Llamamos a la función para obtener los datos
+  }, [navigate]);
+
+  if (loading) {
+    return <p>Cargando datos...</p>;  // Muestra un estado de carga mientras se obtienen los datos
+  }
+
   return (
     <div className="employee-form-container">
-      <h2>Registro De Empleados</h2>
+      <h2>Datos del Empleado</h2>
+
+      {error && <p className="error">{error}</p>}
+
+      {employeeData.length > 0 ? (
+        <ul>
+          {employeeData.map((employee) => (
+            <li key={employee.id}>
+              <p><strong>Nombre:</strong> {employee.Nombre}</p>
+              <p><strong>Apellido Paterno:</strong> {employee.Apellidos}</p>
+              <p><strong>Teléfono:</strong> {employee.Telefono}</p>
+              <p><strong>Correo Electrónico:</strong> {employee.Correo}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No hay datos de empleados disponibles.</p>
+      )}
+
       <form className="employee-form-horizontal">
+        {/* Formulario para crear o editar empleados */}
         <div className="input-group-horizontal">
           <label htmlFor="name">Nombre:</label>
           <input type="text" id="name" name="name" />
@@ -21,7 +86,6 @@ const EmployeeForm = () => {
           <input type="text" id="apellidoMaterno" name="apellidoMaterno" />
         </div>
 
-        {/* Campo de selección de género */}
         <div className="input-group">
           <label>Género:</label>
           <div className="gender-options">
@@ -106,7 +170,6 @@ const EmployeeForm = () => {
           <input type="number" id="SUELDO" name="SUELDO" required />
         </div>
 
-
         <div className="input-group-horizontal">
           <label htmlFor="cargo">Cargo</label>
           <select id="cargo" name="cargo">
@@ -117,12 +180,6 @@ const EmployeeForm = () => {
           </select>
         </div>
 
-
-
-
-
-
-
         <button type="submit" className="submit-button">Enviar</button>
       </form>
     </div>
@@ -130,4 +187,8 @@ const EmployeeForm = () => {
 };
 
 export default EmployeeForm;
+
+
+
+
 

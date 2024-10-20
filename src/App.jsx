@@ -19,7 +19,10 @@ function App() {
         <Route path="/" element={<LoginPage />} />
 
         {/* Rutas protegidas: Solo accesibles para usuarios autenticados */}
-        <Route path="/user" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+        <Route
+          path="/user"
+          element={<ProtectedRoute><Layout /></ProtectedRoute>}
+        >
           <Route path="home" element={<HomePage />} />
           <Route path="asistencias" element={<Asistencias />} />
           <Route path="employees" element={<EmployeeForm />} />
@@ -36,6 +39,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 
